@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Tankz.sln"
+    "dotnet.defaultSolution": "Tankz.sln",
+    "git.ignoreLimitWarning": true
 }
