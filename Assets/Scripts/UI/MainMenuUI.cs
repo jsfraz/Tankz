@@ -40,7 +40,7 @@ public class MainMenuUI : MonoBehaviour
             // connect
             unityTransport.ConnectionData.Address = address;
             NetworkManager.Singleton.StartClient();
-            // SceneManager.LoadScene("Map");
+            SceneManager.LoadScene("Map");
         }
         else
         {

@@ -1,6 +1,7 @@
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Preloader : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class Preloader : MonoBehaviour
             if (args[i] == "-server")
             {
                 NetworkManager.Singleton.StartServer();
-                // SceneManager.LoadScene("Map");
+                SceneManager.LoadScene("Map");
             }
         }
     }

@@ -130,7 +130,7 @@ public class ConsoleUI : MonoBehaviour
     private void Server()
     {
         NetworkManager.Singleton.StartServer();
-        // SceneManager.LoadScene("Map");
+        SceneManager.LoadScene("Map");
     }
 
     // host command
@@ -139,7 +139,7 @@ public class ConsoleUI : MonoBehaviour
     private void Host()
     {
         NetworkManager.Singleton.StartHost();
-        // SceneManager.LoadScene("Map");
+        SceneManager.LoadScene("Map");
     }
 
     // splash command
