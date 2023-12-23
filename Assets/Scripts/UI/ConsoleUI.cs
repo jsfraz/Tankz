@@ -9,53 +9,26 @@ public class ConsoleUI : MonoBehaviour
 {
     // canvas
     private Canvas canvas;
-    // open/close key
-    [SerializeField]
-    private KeyCode openKey;
     // ASCII art
     [SerializeField]
     private TextAsset asciiArt;
     // scroll rect
+    [SerializeField]
     private ScrollRectNoDrag scrollRect;
     // console input
+    [SerializeField]
     private TMP_InputField inputField;
 
     private void Start()
     {
         //canvas
         canvas = gameObject.GetComponent<Canvas>();
-        //scroll rect
-        scrollRect = transform.GetChild(0).GetComponent<ScrollRectNoDrag>();
         // splash
         Splash();
         // logger
         Application.logMessageReceived += HandleLog;
         // input
-        inputField = transform.GetChild(1).GetComponent<TMP_InputField>();
         inputField.enabled = false;
-    }
-
-    private void Update()
-    {
-        // opening closing ui
-        if (Input.GetKeyDown(openKey))
-        {
-            // show canvas
-            canvas.enabled = !canvas.enabled;
-            // log
-            if (canvas.enabled)
-            {
-                Debug.Log("Opened console.");
-                inputField.enabled = true;
-                inputField.ActivateInputField();
-            }
-            else
-            {
-                Debug.Log("Closed console.");
-                inputField.enabled = false;
-                inputField.text= "";
-            }
-        }
     }
 
     void OnDisable()
@@ -166,5 +139,25 @@ public class ConsoleUI : MonoBehaviour
     private void Exit()
     {
         Application.Quit();
+    }
+
+    // shows/hides canvas
+    public void ShowHide()
+    {
+        // enable/disable
+        canvas.enabled = !canvas.enabled;
+        // log
+        if (canvas.enabled)
+        {
+            Debug.Log("Opened console.");
+            inputField.enabled = true;
+            inputField.ActivateInputField();
+        }
+        else
+        {
+            Debug.Log("Closed console.");
+            inputField.enabled = false;
+            inputField.text = "";
+        }
     }
 }

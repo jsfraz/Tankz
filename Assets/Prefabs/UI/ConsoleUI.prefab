@@ -582,7 +582,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3057647427630383811}
   m_HandleRect: {fileID: 1203523469239525026}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -623,7 +623,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 8.493521, y: 30.5}
+  m_AnchoredPosition: {x: 8.493521, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7651342702500628456
@@ -751,7 +751,7 @@ GameObject:
   - component: {fileID: 2919773666865792536}
   - component: {fileID: 5122884965602684468}
   m_Layer: 5
-  m_Name: ConsoleCanvas
+  m_Name: ConsoleUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -853,8 +853,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d183f9c5f93ea47bc412ba57bea22c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openKey: 96
   asciiArt: {fileID: 4900000, guid: b93ef820baa9bdf408c25b9441d0b913, type: 3}
+  scrollRect: {fileID: 3150827115797964386}
+  inputField: {fileID: 5100982129485842831}
 --- !u!1 &5598818504302751670
 GameObject:
   m_ObjectHideFlags: 0
