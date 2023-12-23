@@ -1,22 +1,17 @@
-using System;
 using System.Net;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class NetworkManagerUI : MonoBehaviour
+public class MainMenuUI : MonoBehaviour
 {
     // network manager
     [SerializeField]
     private UnityTransport unityTransport;
-    // ui buttons
     [SerializeField]
-    private Button serverButton;
-    [SerializeField]
-    private Button hostButton;
-    [SerializeField]
-    private Button clientButton;
+    private Button connectButton;
     // alert dialog
     [SerializeField]
     private AlertDialog alertDialogPrefab;
@@ -27,25 +22,16 @@ public class NetworkManagerUI : MonoBehaviour
     private void Awake()
     {
         // button onClick events
-        // server
-        serverButton.onClick.AddListener(() =>
-        {
-            NetworkManager.Singleton.StartServer();
-        });
-        // host
-        hostButton.onClick.AddListener(() =>
-        {
-            NetworkManager.Singleton.StartHost();
-        });
-        // client
-        clientButton.onClick.AddListener(() =>
+        connectButton.onClick.AddListener(() =>
         {
             InputDialog inputDialog = Instantiate(inputDialogPrefab);
             inputDialog.SetTitle("Server address");
+            inputDialog.SetText("127.0.0.1");
             inputDialog.OkPressed += new OkEvent(ConnectClient);
         });
     }
 
+    // connect to server
     private void ConnectClient(string address)
     {
         // check server address
@@ -54,6 +40,7 @@ public class NetworkManagerUI : MonoBehaviour
             // connect
             unityTransport.ConnectionData.Address = address;
             NetworkManager.Singleton.StartClient();
+            // SceneManager.LoadScene("Map");
         }
         else
         {

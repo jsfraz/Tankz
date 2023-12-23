@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ConsoleUI : MonoBehaviour
 {
@@ -64,23 +66,23 @@ public class ConsoleUI : MonoBehaviour
     }
 
     // return commands
-    private Dictionary<string, Action> GetCommands()
+    private Dictionary<CommandAttribute, Action> GetCommands()
     {
-        Dictionary<string, Action> commands = new Dictionary<string, Action>();
+        Dictionary<CommandAttribute, Action> commands = new Dictionary<CommandAttribute, Action>();
 
         var methods = GetType().GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
 
         foreach (var method in methods)
         {
-            var commandAttribute = (CommandAttribute)Attribute.GetCustomAttribute(method, typeof(CommandAttribute));
+            CommandAttribute commandAttribute = (CommandAttribute)Attribute.GetCustomAttribute(method, typeof(CommandAttribute));
 
             if (commandAttribute != null)
             {
-                commands.Add(commandAttribute.Name, (Action)Delegate.CreateDelegate(typeof(Action), this, method));
+                commands.Add(commandAttribute, (Action)Delegate.CreateDelegate(typeof(Action), this, method));
             }
         }
 
-        return commands.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+        return commands.OrderBy(x => x.Key.Name).ToDictionary(x => x.Key, x => x.Value);
     }
 
     // execute command
@@ -88,10 +90,13 @@ public class ConsoleUI : MonoBehaviour
     {
         if (inputField.text != "")
         {
-            Dictionary<string, Action> commands = GetCommands();
+            Dictionary<CommandAttribute, Action> commands = GetCommands();
             // check if command exists and execute
-            if (commands.ContainsKey(inputField.text))
-                commands[inputField.text].Invoke();
+            CommandAttribute commandAttribute = commands.Keys.Where(x => x.Name == inputField.text).FirstOrDefault();
+            if (commandAttribute != null)
+            {
+                commands[commandAttribute].Invoke();
+            }
             else
                 Debug.LogWarning("Command '" + inputField.text + "' does not exist!");
 
@@ -105,20 +110,40 @@ public class ConsoleUI : MonoBehaviour
     }
 
     // help command
-    [Command("help")]
+    [Command("help", "Shows all commands")]
     [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members")]
     private void Help()
     {
-        string text = "You can use the following commands:";
-        // get command and add name to string
-        foreach (string command in GetCommands().Keys)
-            text += "\n" + command;
+        string text = "";
+        // get command and add name and description to string
+        foreach (CommandAttribute command in GetCommands().Keys)
+        {
+            text += "\n" + command.Name + " - " + command.Desctiption;
+        }
         // log
         Debug.Log(text);
     }
 
+    // server command
+    [Command("server", "Starts server")]
+    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members")]
+    private void Server()
+    {
+        NetworkManager.Singleton.StartServer();
+        // SceneManager.LoadScene("Map");
+    }
+
+    // host command
+    [Command("host", "Starts host")]
+    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members")]
+    private void Host()
+    {
+        NetworkManager.Singleton.StartHost();
+        // SceneManager.LoadScene("Map");
+    }
+
     // splash command
-    [Command("splash")]
+    [Command("splash", "Shows splash art")]
     private void Splash()
     {
         scrollRect.content.GetComponent<TextMeshProUGUI>().text += asciiArt;
@@ -126,7 +151,7 @@ public class ConsoleUI : MonoBehaviour
     }
 
     // clear command
-    [Command("clear")]
+    [Command("clear", "Clears console")]
     [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members")]
     private void Clear()
     {
@@ -134,7 +159,7 @@ public class ConsoleUI : MonoBehaviour
     }
 
     // exit command
-    [Command("exit")]
+    [Command("exit", "Exits game")]
     [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members")]
     private void Exit()
     {

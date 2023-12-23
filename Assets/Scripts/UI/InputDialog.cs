@@ -28,4 +28,9 @@ public class InputDialog : MonoBehaviour
     {
         title.text = value;
     }
+
+    public void SetText(string value)
+    {
+        input.text = value;
+    }
 }

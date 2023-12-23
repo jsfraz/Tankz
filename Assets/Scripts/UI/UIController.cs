@@ -18,7 +18,7 @@ public class UIController : MonoBehaviour
     private void Update()
     {
         // console
-        if (Input.GetKeyDown(consoleKey))
+        if (Input.GetKeyDown(consoleKey) && Debug.isDebugBuild)
         {
             console.ShowHide();
         }
