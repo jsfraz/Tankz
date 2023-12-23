@@ -13,12 +13,18 @@ public class InputDialog : MonoBehaviour
     [SerializeField]
     private Button okButton;
     public event OkEvent OkPressed;
+    [SerializeField]
+    private Button cancelButton;
 
     private void Awake()
     {
         okButton.onClick.AddListener(() =>
         {
             OkPressed(input.text);
+            Destroy(gameObject);
+        });
+        cancelButton.onClick.AddListener(() =>
+        {
             Destroy(gameObject);
         });
         input.Select();
